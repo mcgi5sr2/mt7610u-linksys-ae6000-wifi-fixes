@@ -209,6 +209,7 @@ Note:
 	};
 ========================================================================
 */
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,6,0))
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
 static int CFG80211_OpsChannelSet(
 	IN struct wiphy					*pWiphy,
@@ -231,11 +232,6 @@ static int CFG80211_OpsChannelSet(
 
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> %s ==>\n", __FUNCTION__));
 	MAC80211_PAD_GET(pAd, pWiphy);
-
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0))
-	struct net_device *dev = NULL;
-	RTMP_DRIVER_NET_DEV_GET(pAd, &dev);
-#endif /* LINUX_VERSION_CODE: 3.6.0 */
 
 	/* get channel number */
 	ChanId = ieee80211_frequency_to_channel(pChan->center_freq);
@@ -278,6 +274,7 @@ static int CFG80211_OpsChannelSet(
 
 	return 0;
 } /* End of CFG80211_OpsChannelSet */
+#endif  /* LINUX_VERSION_CODE < KERNEL_VERSION(3,6,0) */
 
 
 /*
@@ -1759,99 +1756,6 @@ static int CFG80211_OpsDelBeacon(
 
     RTMP_DRIVER_80211_BEACON_DEL(pAd);
     return 0;
-}
-#else
-static int CFG80211_OpsStartAp(
-	struct wiphy *pWiphy,
-	struct net_device *netdev,
-	struct cfg80211_ap_settings *settings)
-{
-    VOID *pAd;
-    CMD_RTPRIV_IOCTL_80211_BEACON bcn;
-    UCHAR *beacon_head_buf, *beacon_tail_buf;
-    
-    MAC80211_PAD_GET(pAd, pWiphy);	
-    CFG80211DBG(RT_DEBUG_TRACE, ("80211> %s ==>\n", __FUNCTION__));
-	
-	if (settings->beacon.head_len > 0) 
-	{
-		os_alloc_mem(NULL, &beacon_head_buf, settings->beacon.head_len);
-		NdisCopyMemory(beacon_head_buf, settings->beacon.head, settings->beacon.head_len);
-	}
-
-	if (settings->beacon.tail_len > 0) 
-	{
-		os_alloc_mem(NULL, &beacon_tail_buf, settings->beacon.tail_len);
-		NdisCopyMemory(beacon_tail_buf, settings->beacon.tail, settings->beacon.tail_len);
-	}
-
-	bcn.beacon_head_len = settings->beacon.head_len;
-	bcn.beacon_tail_len = settings->beacon.tail_len;
-	bcn.beacon_head = beacon_head_buf;
-	bcn.beacon_tail = beacon_tail_buf;
-	bcn.dtim_period = settings->dtim_period;
-        bcn.interval = settings->beacon_interval;
-
-
-	RTMP_DRIVER_80211_BEACON_ADD(pAd, &bcn);
-
-	if (beacon_head_buf)
-		os_free_mem(NULL, beacon_head_buf);
-	if (beacon_tail_buf)
-		os_free_mem(NULL, beacon_tail_buf);
-
-	return 0;
-}
-
-static int CFG80211_OpsChangeBeacon(
-	struct wiphy *pWiphy,
-	struct net_device *netdev,
-	struct cfg80211_beacon_data *info)
-{
-    VOID *pAd;
-    CMD_RTPRIV_IOCTL_80211_BEACON bcn;
-    UCHAR *beacon_head_buf, *beacon_tail_buf;
-    
-    MAC80211_PAD_GET(pAd, pWiphy);	
-    CFG80211DBG(RT_DEBUG_TRACE, ("80211> %s ==>\n", __FUNCTION__));
-	
-	if (info->head_len > 0) 
-	{
-		os_alloc_mem(NULL, &beacon_head_buf, info->head_len);
-		NdisCopyMemory(beacon_head_buf, info->head, info->head_len);
-	}
-
-	if (info->tail_len > 0) {
-		os_alloc_mem(NULL, &beacon_tail_buf, info->tail_len);
-		NdisCopyMemory(beacon_tail_buf, info->tail, info->tail_len);
-	}
-
-	bcn.beacon_head_len = info->head_len;
-	bcn.beacon_tail_len = info->tail_len;
-	bcn.beacon_head = beacon_head_buf;
-	bcn.beacon_tail = beacon_tail_buf;
-
-	RTMP_DRIVER_80211_BEACON_SET(pAd, &bcn);
-
-	if (beacon_head_buf)
-		os_free_mem(NULL, beacon_head_buf);
-	if (beacon_tail_buf)
-		os_free_mem(NULL, beacon_tail_buf);
-	return 0;
-
-}
-
-static int CFG80211_OpsStopAp(
-	struct wiphy *pWiphy,
-	struct net_device *netdev)
-{
-	VOID *pAd;
-	MAC80211_PAD_GET(pAd, pWiphy);
-
-	CFG80211DBG(RT_DEBUG_OFF, ("80211> %s ==>\n", __FUNCTION__));
-
-	RTMP_DRIVER_80211_BEACON_DEL(pAd);
-	return 0;
 }
 #endif	/* LINUX_VERSION_CODE < KERNEL_VERSION(3,4,0) */
 
