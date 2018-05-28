@@ -1784,14 +1784,15 @@ static VOID MT76x0_ChipSwitchChannel(
 	BOOLEAN bScan)
 {
 	CHAR TxPwer = 0; /* Bbp94 = BBPR94_DEFAULT, TxPwer2 = DEFAULT_RF_TX_POWER; */
-	UCHAR RFValue = 0;
 	UINT32 RegValue = 0;
 	UINT32 Index;
 	UINT32 rf_phy_mode, rf_bw = RF_BW_20;
-	UCHAR bbp_ch_idx, delta_pwr;
+	UCHAR bbp_ch_idx;
 	UINT32 ret;
 	ULONG Old, New, Diff;
-#ifndef MT76x0_TSSI_CAL_COMPENSATION
+#ifdef MT76x0_TSSI_CAL_COMPENSATION
+	UCHAR delta_pwr;
+#else
 	UINT32 Value;
 #endif /* !MT76x0_TSSI_CAL_COMPENSATION */
 #ifdef SINGLE_SKU_V2
@@ -5495,7 +5496,6 @@ void mt76x0_temp_tx_alc_init(PRTMP_ADAPTER pAd)
 
 void mt76x0_read_tx_alc_info_from_eeprom(PRTMP_ADAPTER pAd)
 {
-	BOOLEAN status = TRUE;
 	USHORT e2p_value = 0;
 
 	if (IS_MT76x0(pAd)) {
