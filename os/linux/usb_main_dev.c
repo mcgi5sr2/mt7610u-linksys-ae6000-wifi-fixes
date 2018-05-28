@@ -391,7 +391,6 @@ static int rt2870_suspend(
 	struct usb_interface *intf,
 	pm_message_t state)
 {
-	struct net_device *net_dev;
 	VOID *pAd = usb_get_intfdata(intf);
 	
 	DBGPRINT(RT_DEBUG_TRACE, ("===> rt2870_suspend()\n"));
@@ -427,11 +426,6 @@ static int rt2870_suspend(
 	RTMP_DRIVER_ADAPTER_RT28XX_USB_ASICRADIO_OFF(pAd);
 	RTMP_DRIVER_ADAPTER_SUSPEND_SET(pAd);
 
-/*	net_dev = pAd->net_dev; */
-	//RTMP_DRIVER_NET_DEV_GET(pAd, &net_dev);
-	//netif_device_detach(net_dev);
-
-	//RTMP_DRIVER_USB_SUSPEND(pAd, netif_running(net_dev));
 	DBGPRINT(RT_DEBUG_TRACE, ("<=== rt2870_suspend()\n"));
 	return 0;
 }
@@ -439,7 +433,6 @@ static int rt2870_suspend(
 static int rt2870_resume(
 	struct usb_interface *intf)
 {
-	struct net_device *net_dev;
 	VOID *pAd = usb_get_intfdata(intf);
 
 #ifdef USB_SUPPORT_SELECTIVE_SUSPEND
@@ -477,16 +470,6 @@ static int rt2870_resume(
 
 	RTMP_DRIVER_ADAPTER_SUSPEND_CLEAR(pAd);
 	RTMP_DRIVER_ADAPTER_RT28XX_USB_ASICRADIO_ON(pAd);
-
-/*	pAd->PM_FlgSuspend = 0; */
-	//RTMP_DRIVER_USB_RESUME(pAd);
-
-/*	net_dev = pAd->net_dev; */
-	//RTMP_DRIVER_NET_DEV_GET(pAd, &net_dev);
-	//netif_device_attach(net_dev);
-	//netif_start_queue(net_dev);
-	//netif_carrier_on(net_dev);
-	//netif_wake_queue(net_dev);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("<=== rt2870_resume()\n"));
 	return 0;
