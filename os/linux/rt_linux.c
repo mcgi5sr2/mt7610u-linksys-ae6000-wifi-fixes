@@ -173,8 +173,6 @@ VOID RTMPusecDelay(ULONG usec)
 /* Unify all delay routine by using udelay */
 VOID RtmpOsUsDelay(ULONG value)
 {
-	ULONG i;
-
 	udelay(value);
 }
 
@@ -2156,10 +2154,6 @@ int RtmpOSIRQRelease(
 	IN PPCI_DEV pci_dev,
 	IN BOOLEAN *pHaveMsi)
 {
-	struct net_device *net_dev = (struct net_device *)pNetDev;
-
-
-
 	return 0;
 }
 
