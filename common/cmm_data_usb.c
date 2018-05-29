@@ -1148,7 +1148,6 @@ PNDIS_PACKET GetPacketFromRxRing(
 	UCHAR *pData, *RXDMA;
 	ULONG ThisFrameLen, RxBufferLength, valid_len;
 	RXWI_STRUC *pRxWI;
-	UINT8 RXWISize = pAd->chipCap.RXWISize;
 	RXINFO_STRUC *pRxInfo;
 #ifdef RLT_MAC
 	RXFCE_INFO *pRxFceInfo;
