@@ -1360,7 +1360,7 @@ VOID CFG80211_LostApInform(
 {
 
 	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdCB;
-	CFG80211_CB *p80211CB = pAd->pCfg80211_CB;
+	// CFG80211_CB *p80211CB = pAd->pCfg80211_CB;
 	
 	DBGPRINT(RT_DEBUG_TRACE, ("80211> CFG80211_LostApInform ==> \n"));
 	pAd->StaCfg.bAutoReconnect = FALSE;
