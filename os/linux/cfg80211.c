@@ -442,6 +442,9 @@ static int CFG80211_OpsScan(
 	struct iw_scan_req IwReq;
 	union iwreq_data Wreq;
 #endif /* WPA_SUPPLICANT_SUPPORT */
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0))
+	struct net_device *pNdev = NULL;
+#endif /* LINUX_VERSION_CODE: 3.6.0 */
 
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> %s ==>\n", __FUNCTION__));
 	MAC80211_PAD_GET(pAd, pWiphy);
@@ -454,7 +457,6 @@ static int CFG80211_OpsScan(
 	}
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0))
-	struct net_device *pNdev = NULL;
 	RTMP_DRIVER_NET_DEV_GET(pAd, &pNdev);
 #endif /* LINUX_VERSION_CODE: 3.6.0 */
 
