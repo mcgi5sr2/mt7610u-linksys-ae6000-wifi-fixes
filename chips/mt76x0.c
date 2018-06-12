@@ -1195,7 +1195,7 @@ VOID SetRfChFreqParametersMT76x0(
 	UINT32 i = 0, RfBand = 0, MacReg = 0;
 	UCHAR RFValue = 0;
 	BOOLEAN bSDM = FALSE;
-	MT76x0_FREQ_ITEM *pMT76x0_freq_item = NULL;
+	const MT76x0_FREQ_ITEM *pMT76x0_freq_item = NULL;
 
 	if (!IS_MT76x0(pAd))
 	{
