@@ -100,4 +100,7 @@ https://wikidevi.com/wiki/MediaTek_MT7610U
 
 # Other
 - Please submit patches or let me know of anything missing or not working
-- I also don't know the code very well, but have been working on comparing MT7610U and MT7612U code to find out-of-date portions in the MT7610U driver
+- I also don't know the code at all just mashed it together
+- You will probably need to restart the network_manager to get 5Ghz working
+`sudo service network-manager restart`
+- also add a country code to the conf file in /etc/Wireless/RT2870STA/rt2870sta.dat
